@@ -8,7 +8,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <!-- Style Sheet -->
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -18,7 +18,7 @@
 
     <!-- Main Navigation Bar -->
     <header class="navbar">
-        <div class="logo-container">
+        <a href="#" class="logo-container">
             <div class="logo-icon">
                 <div class="inner-shield"></div>
                 <div class="solana-bars">
@@ -31,16 +31,17 @@
                 <span class="brand-main">SolAudit</span>
                 <span class="brand-sub">LABS</span>
             </div>
-        </div>
+        </a>
         <div class="nav-status">
             <span class="indicator-dot blinking"></span>
             <span class="status-label">SOLAUDIT-MAINNET-BETA</span>
         </div>
         <div class="nav-actions">
-            <a href="#simulator" class="nav-btn btn-secondary">Sandbox</a>
-            <a href="#explorer" class="nav-btn btn-secondary">Audit Explorer</a>
-            <a href="#oracle" class="nav-btn btn-secondary">Oracle Network</a>
-            <a href="#developer" class="nav-btn btn-primary">Developer Docs</a>
+            <a href="#simulator" class="nav-link">Sandbox</a>
+            <a href="#explorer" class="nav-link">Audit Explorer</a>
+            <a href="#oracle" class="nav-link">Oracle Network</a>
+            <a href="#developer" class="nav-link">Developer Docs</a>
+            <button id="btn-connect-wallet" class="btn btn-primary">Connect Wallet</button>
         </div>
     </header>
 
@@ -55,46 +56,104 @@
             
             <!-- Quick Stat Bar -->
             <div class="quick-stats">
-                <div class="stat-card">
+                <div class="stat-card cyan">
                     <div class="stat-value" id="stat-attestations">584,291</div>
                     <div class="stat-label">Attestations Active</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card purple">
                     <div class="stat-value" id="stat-audited">12.8M</div>
                     <div class="stat-label">Monthly Audits</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card green">
                     <div class="stat-value" id="stat-latency">340ms</div>
                     <div class="stat-label">Attestation Latency</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card gold">
                     <div class="stat-value" id="stat-unlocked">$512M</div>
-                    <div class="stat-label">Capital Unlocked</div>
+                    <div class="stat-label">Capital Gated</div>
                 </div>
             </div>
         </section>
 
-        <!-- Dynamic Live Telemetry & Alerts -->
-        <section class="telemetry-section">
-            <div class="panel-header">
-                <h2>⚡ Live Attestation Telemetry</h2>
-                <div class="live-pulse">
-                    <span class="blinking-dot red"></span>
-                    <span>REAL-TIME DEVMAP STREAM</span>
-                </div>
-            </div>
-            <div class="telemetry-grid">
-                <div class="recent-events-card">
-                    <h3>Recent On-Chain Verifications</h3>
-                    <div class="event-feed-list" id="event-feed">
-                        <!-- Filled dynamically by JavaScript -->
+        <!-- Real-Time Analytics SVG Chart -->
+        <section class="analytics-section">
+            <div class="analytics-grid">
+                <div class="chart-card card">
+                    <div class="panel-header">
+                        <h2>📊 Audit Throughput Telemetry</h2>
+                        <div class="live-pulse">
+                            <span class="blinking-dot green"></span>
+                            <span>LIVE TRANSACTIONS METRIC</span>
+                        </div>
+                    </div>
+                    <div class="chart-container" id="chart-panel">
+                        <div id="chart-tooltip" class="chart-tooltip"></div>
+                        <svg class="chart-svg" id="throughput-chart" viewBox="0 0 700 220" preserveAspectRatio="none">
+                            <defs>
+                                <linearGradient id="chart-gradient" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#00f0ff" />
+                                    <stop offset="100%" stop-color="#9b51e0" />
+                                </linearGradient>
+                                <linearGradient id="area-gradient" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#00f0ff" stop-opacity="0.3"/>
+                                    <stop offset="100%" stop-color="#9b51e0" stop-opacity="0.0"/>
+                                </linearGradient>
+                            </defs>
+                            <!-- Y Axis Grid Lines -->
+                            <line class="chart-grid-line" x1="50" y1="20" x2="680" y2="20" />
+                            <line class="chart-grid-line" x1="50" y1="70" x2="680" y2="70" />
+                            <line class="chart-grid-line" x1="50" y1="120" x2="680" y2="120" />
+                            <line class="chart-grid-line" x1="50" y1="170" x2="680" y2="170" />
+                            <line class="chart-grid-line" x1="50" y1="200" x2="680" y2="200" />
+                            
+                            <!-- Y Labels -->
+                            <text class="chart-labels-y" x="40" y="24">1,000 tx</text>
+                            <text class="chart-labels-y" x="40" y="74">750 tx</text>
+                            <text class="chart-labels-y" x="40" y="124">500 tx</text>
+                            <text class="chart-labels-y" x="40" y="174">250 tx</text>
+                            <text class="chart-labels-y" x="40" y="204">0 tx</text>
+                            
+                            <!-- X Labels (Dynamic slots) -->
+                            <text class="chart-labels-x" x="100" y="215">Slot -50k</text>
+                            <text class="chart-labels-x" x="220" y="215">Slot -40k</text>
+                            <text class="chart-labels-x" x="340" y="215">Slot -30k</text>
+                            <text class="chart-labels-x" x="460" y="215">Slot -20k</text>
+                            <text class="chart-labels-x" x="580" y="215">Slot -10k</text>
+                            <text class="chart-labels-x" x="660" y="215">Current</text>
+
+                            <!-- Polyline and Fill path updated dynamically by app.js -->
+                            <path class="chart-area" id="chart-area-path" d="" />
+                            <path class="chart-path" id="chart-line-path" d="" />
+                        </svg>
                     </div>
                 </div>
                 <div class="alerts-card">
-                    <h3>Active Rule Violations Gated</h3>
+                    <div class="panel-header">
+                        <h3>🚨 Live Sanctions Blocked</h3>
+                        <div class="live-pulse">
+                            <span class="blinking-dot red"></span>
+                            <span>ACTIVE GATES</span>
+                        </div>
+                    </div>
                     <div class="violation-list" id="violation-feed">
                         <!-- Filled dynamically by JavaScript -->
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dynamic Live Telemetry Stream -->
+        <section class="telemetry-section">
+            <div class="panel-header">
+                <h2>⚡ Live Attestation Telemetry Stream</h2>
+                <div class="live-pulse">
+                    <span class="blinking-dot green"></span>
+                    <span>REAL-TIME DEVMAP STREAM</span>
+                </div>
+            </div>
+            <div class="recent-events-card" style="height: auto; max-height: 400px;">
+                <div class="event-feed-list" id="event-feed">
+                    <!-- Filled dynamically by JavaScript -->
                 </div>
             </div>
         </section>
@@ -103,11 +162,13 @@
         <section id="simulator" class="interactive-simulator-section">
             <div class="panel-header">
                 <h2>🧪 ZK-SNARK Attestation & CPI Sandbox</h2>
-                <span class="badge cyan">LAYER 1 & 4 PROTOTYPE</span>
+                <span class="badge cyan">LAYER 1 & 4 ENGINE</span>
             </div>
             <div class="simulator-layout">
                 <div class="simulator-controls card">
                     <h3>1. Configure Wallet & Compliance Predicate</h3>
+                    <p class="section-desc">Set target address, select validators, build rule conditions, and synthesize compliant zero-knowledge proof tokens.</p>
+                    
                     <div class="form-group">
                         <label for="sim-wallet">Solana Wallet Address (Target)</label>
                         <div class="input-with-btn">
@@ -115,15 +176,28 @@
                             <button id="btn-rand-wallet" class="small-btn">🎲 Gen</button>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="sim-predicate">Compliance Predicate</label>
-                        <select id="sim-predicate">
-                            <option value="KYC_AML_COMBINED">KYC/AML Combined Verification (Global)</option>
-                            <option value="OFAC_SDN_SCREEN">OFAC Sanctions & SDN Verification (U.S.)</option>
-                            <option value="PEP_SCREENING">Politically Exposed Person check (EU AMLD6)</option>
-                            <option value="TRAVEL_RULE_ID">FATF Recommendation 16 (Originator/Beneficiary)</option>
-                        </select>
+
+                    <!-- Dynamic Rule Builder -->
+                    <div class="rule-builder-container">
+                        <div class="rule-builder-title">Predicate Rule Configurator</div>
+                        <div class="rules-list-gated" id="rules-box">
+                            <!-- Filled dynamically by JS -->
+                        </div>
+                        <div class="rule-builder-adder">
+                            <select id="rule-adder-select">
+                                <option value="GOVERNMENT_ID_VERIFIED">Government ID Validated</option>
+                                <option value="LIVENESS_CHECK_PASSED">Liveness Check Met</option>
+                                <option value="OFAC_SDN_CLEAR">OFAC SDN Checklist Checked</option>
+                                <option value="PEP_SCREENING_CLEAR">Non-PEP Screening Cleared</option>
+                                <option value="AMLD6_COMPLIANT">EU AMLD6 Gated</option>
+                                <option value="ORIGINATOR_ID_VERIFIED">Originator Ident Checked</option>
+                                <option value="BENEFICIARY_ID_VERIFIED">Beneficiary Ident Checked</option>
+                                <option value="THRESHOLD_LIMIT_PASSED">Threshold limits < $3,000</option>
+                            </select>
+                            <button id="btn-add-rule" class="small-btn">➕ Add Rule</button>
+                        </div>
                     </div>
+
                     <div class="form-group">
                         <label for="sim-issuer">Attestation Issuer (Accredited Node)</label>
                         <select id="sim-issuer">
@@ -139,7 +213,7 @@
                             Generate Groth16 ZK-SNARK Proof (Preserves privacy / hides PII)
                         </label>
                     </div>
-                    <button id="btn-issue" class="btn-primary w-full glow">🚀 Issue On-Chain Attestation PDA</button>
+                    <button id="btn-issue" class="btn btn-primary w-full glow">🚀 Issue On-Chain Attestation PDA</button>
                 </div>
 
                 <div class="simulator-logs card">
@@ -149,20 +223,20 @@
                             <span class="terminal-dot red"></span>
                             <span class="terminal-dot yellow"></span>
                             <span class="terminal-dot green"></span>
-                            <span class="terminal-title">solaudit-proving-node-0.1.0</span>
+                            <span class="terminal-title">solaudit-proving-node-1.0.0</span>
                         </div>
                         <div class="terminal-body" id="simulator-terminal">
                             <div class="term-line system">--- READY FOR PREDICATE SYNTHESIS ---</div>
-                            <div class="term-line">Enter configuration and press [Issue On-Chain Attestation PDA]</div>
+                            <div class="term-line">Configure compliance rules and trigger [Issue On-Chain Attestation PDA]</div>
                         </div>
                     </div>
                     
                     <!-- CPI Verification Module -->
                     <div class="cpi-tester">
                         <h4>Simulate Cross-Program Invocation (CPI) check</h4>
-                        <p class="small-desc">Simulates a lending protocol or DEX invoking the verify_attestation instruction atomically inside a transaction.</p>
+                        <p class="small-desc">Execute an atomic transaction verifying compliance state on-chain via custom Anchor gates.</p>
                         <div class="cpi-action-bar">
-                            <button id="btn-cpi-verify" class="btn-secondary w-full" disabled>🔒 Invoke verify_attestation CPI</button>
+                            <button id="btn-cpi-verify" class="btn btn-secondary w-full" disabled>🔒 Invoke verify_attestation CPI</button>
                         </div>
                     </div>
                 </div>
@@ -173,9 +247,9 @@
         <section id="explorer" class="audit-explorer-section">
             <div class="panel-header">
                 <h2>📇 Merkle-Chained Audit Log Explorer</h2>
-                <span class="badge purple">LAYER 2 PROTOTYPE</span>
+                <span class="badge purple">LAYER 2 LEDGER</span>
             </div>
-            <p class="section-desc">Every attestation issuance, revocation, and validation event produces an append-only log entry stored in a deterministically derived PDA chain. Each block mathematically seals the Merkle Root of the previous transactions, establishing a verifiable audit trail.</p>
+            <p class="section-desc">Each attestation event appends a record to an immutable PDA chain. Merkle Roots mathematically secure previous entries, ensuring complete, tamper-proof compliance trails.</p>
             
             <div class="explorer-grid">
                 <div class="blocks-timeline card">
@@ -187,7 +261,7 @@
                 <div class="block-details card">
                     <h3>Cryptographic Proof Verification</h3>
                     <div id="block-details-content" class="details-placeholder">
-                        <p>Click any log block in the append chain to generate its Merkle Proof and inspect its structured PDA schema.</p>
+                        <p>Select any event block in the chain to verify its Merkle Proof path and inspect its on-chain schema.</p>
                     </div>
                 </div>
             </div>
@@ -197,22 +271,36 @@
         <section id="oracle" class="oracle-governance-section">
             <div class="panel-header">
                 <h2>🌐 Compliance Oracle Network & Rules Governance</h2>
-                <span class="badge gold">LAYER 3 PROTOTYPE</span>
+                <span class="badge gold">LAYER 3 CONSENSUS</span>
             </div>
             <div class="oracle-layout">
                 <!-- Oracle Node List -->
                 <div class="oracle-nodes card">
                     <h3>CON Nodes & Stake Consensus</h3>
-                    <p class="small-desc">Oracle validators run compliance engines and secure the network via stake-weighted voting on compliance registry updates.</p>
+                    <p class="small-desc">Oracle validators run off-chain compliance engines and secure network configuration updates via stake delegation.</p>
                     <div class="node-list" id="oracle-node-list">
                         <!-- Filled dynamically by JavaScript -->
+                    </div>
+                    
+                    <!-- Stake Delegate Actions -->
+                    <div class="node-actions-area">
+                        <h4>Delegate SOL to Node</h4>
+                        <div class="stake-delegator-form">
+                            <div class="form-row">
+                                <select id="stake-target-node">
+                                    <!-- Options filled dynamically -->
+                                </select>
+                                <input type="text" id="stake-amount-sol" placeholder="Amount (e.g. 500 SOL)">
+                            </div>
+                            <button id="btn-delegate-stake" class="btn btn-primary w-full">Delegate & Delegate Stake</button>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Governance Proposals Portal -->
                 <div class="governance-portal card">
                     <h3>SPL Governance Registry Portal</h3>
-                    <p class="small-desc">Propose and vote on compliance rules registry (e.g. updating OFAC list coordinates or FATF transaction thresholds).</p>
+                    <p class="small-desc">Submit compliance update votes. Validators issue automated stake-weighted verification actions.</p>
                     <div class="proposals-list" id="gov-proposals">
                         <!-- Filled dynamically by JavaScript -->
                     </div>
@@ -222,13 +310,13 @@
                         <h4>Submit New Registry Proposal</h4>
                         <div class="form-row">
                             <input type="text" id="prop-title" placeholder="Proposal Title (e.g. Add OFAC List Update 2026-05)">
-                            <select id="prop-type">
-                                <option value="OFAC">OFAC Sanctions Update</option>
-                                <option value="THRESHOLD">Transaction Threshold Limit</option>
-                                <option value="JURISDICTION">High-Risk Jurisdiction Ban</option>
+                            <select id="prop-type" style="max-width: 180px;">
+                                <option value="OFAC">OFAC Updates</option>
+                                <option value="THRESHOLD">Limits Threshold</option>
+                                <option value="JURISDICTION">Jurisdiction Ban</option>
                             </select>
                         </div>
-                        <button id="btn-submit-proposal" class="small-btn btn-primary w-full">Submit Proposal to DAO Timelock</button>
+                        <button id="btn-submit-proposal" class="btn btn-primary w-full">Submit Proposal to DAO Timelock</button>
                     </div>
                 </div>
             </div>
@@ -238,65 +326,89 @@
         <section id="developer" class="developer-playground-section">
             <div class="panel-header">
                 <h2>🛠️ Developer Integration Playground</h2>
-                <span class="badge cyan">LAYER 4 PROTOTYPE</span>
+                <span class="badge cyan">SDK & SMART CONTRACT GATES</span>
             </div>
-            <p class="section-desc">SolAudit provides a composable, zero-friction integration experience. Use Anchor macros to secure any smart contract instruction with a single decorator, or integrate via our TypeScript SDK in client apps.</p>
+            <p class="section-desc">Integrate SolAudit with Anchor Rust programs, typescript clients, or checkout terminals with a single function call.</p>
             
             <div class="dev-tabs">
                 <button class="tab-btn active" data-tab="anchor">Anchor Smart Contract (Rust)</button>
                 <button class="tab-btn" data-tab="typescript">TypeScript SDK</button>
                 <button class="tab-btn" data-tab="solanapay">Solana Pay Integration</button>
             </div>
-            <div class="tab-content active" id="tab-anchor">
-                <pre><code class="language-rust">use anchor_lang::prelude::*;
-use solaudit_sdk::{compliance_gate, ComplianceGated, PredicateType};
+            <div class="tab-container-relative">
+                <button id="btn-copy-code" class="btn-copy-code">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+                    <span>Copy Code</span>
+                </button>
+                <div class="tab-content active" id="tab-anchor">
+<pre><code class="language-rust"><span class="code-keyword">use</span> anchor_lang::prelude::*;
+<span class="code-keyword">use</span> solaudit_sdk::{<span class="code-macro">compliance_gate</span>, ComplianceGated, PredicateType};
 
-#[program]
-pub mod solana_defi_protocol {
-    use super::*;
+<span class="code-keyword">#[program]</span>
+<span class="code-keyword">pub mod</span> solana_defi_protocol {
+    <span class="code-keyword">use super</span>::*;
 
-    // Automatically gates trade function with a KYC check
-    #[compliance_gate(predicate = PredicateType::KycAml, issuer_set = "solaudit_mainnet")]
-    pub fn execute_swap(ctx: Context&lt;ExecuteSwap&gt;, amount: u64) -&gt; Result&lt;()&gt; {
-        // Your trade, lending, or liquidity provisioning business logic
-        msg!("Compliance verification check passed atomically via PDA verify_attestation CPI call.");
-        Ok(())
+    <span class="code-comment">// Automatically gates trade function with a compliance check</span>
+    <span class="code-keyword">#[compliance_gate(predicate = <span class="code-type">PredicateType::Custom</span>, code = <span class="code-string">"<span class="code-keyword" id="anchor-code-predicate">KYC_AML_COMBINED</span>"</span>)]</span>
+    <span class="code-keyword">pub fn</span> <span class="code-func">execute_swap</span>(ctx: Context&lt;ExecuteSwap&gt;, amount: <span class="code-type">u64</span>) -&gt; Result&lt;()&gt; {
+        <span class="code-macro">msg!</span>(<span class="code-string">"Compliance verification check passed atomically via PDA verify_attestation CPI call."</span>);
+        <span class="code-keyword">Ok</span>(())
     }
 }</code></pre>
-            </div>
-            <div class="tab-content" id="tab-typescript">
-                <pre><code class="language-javascript">import { Connection, PublicKey } from '@solana/web3.js';
-import { SolAuditClient, PredicateType } from '@solaudit/sdk';
+                </div>
+                <div class="tab-content" id="tab-typescript">
+<pre><code class="language-javascript"><span class="code-keyword">import</span> { Connection, PublicKey } <span class="code-keyword">from</span> <span class="code-string">'@solana/web3.js'</span>;
+<span class="code-keyword">import</span> { SolAuditClient, PredicateType } <span class="code-keyword">from</span> <span class="code-string">'@solaudit/sdk'</span>;
 
-const connection = new Connection("https://api.mainnet-beta.solana.com");
-const client = new SolAuditClient({ connection });
+<span class="code-keyword">const</span> connection = <span class="code-keyword">new</span> <span class="code-func">Connection</span>(<span class="code-string">"https://api.mainnet-beta.solana.com"</span>);
+<span class="code-keyword">const</span> client = <span class="code-keyword">new</span> <span class="code-func">SolAuditClient</span>({ connection });
 
-// Query the user's active attestation credentials
-const walletAddress = new PublicKey("3tGhNkPqBmVrLwDsAeCjXfYuIoZpMnQvKsWlRdEaTbFc");
-const attestation = await client.getAttestation(walletAddress, PredicateType.KYC_AML_COMBINED);
+<span class="code-keyword">const</span> walletAddress = <span class="code-keyword">new</span> <span class="code-func">PublicKey</span>(<span class="code-string">"3tGhNkPqBmVrLwDsAeCjXfYuIoZpMnQvKsWlRdEaTbFc"</span>);
+<span class="code-keyword">const</span> attestation = <span class="code-keyword">await</span> client.<span class="code-func">getAttestation</span>(walletAddress, <span class="code-string">"<span id="sdk-code-predicate">KYC_AML_COMBINED</span>"</span>);
 
-console.log("Attestation Address:", attestation.publicKey.toBase58());
-console.log("Issuer Details:", attestation.issuer.name);
-console.log("Is Verification Active?:", attestation.status === "ACTIVE" && attestation.expiresAt > Date.now());</code></pre>
-            </div>
-            <div class="tab-content" id="tab-solanapay">
-                <pre><code class="language-javascript">// Construct Solana Pay payment requests requiring KYC attestation prior to execution
-import { encodeURL } from '@solana/pay';
+console.log(<span class="code-string">"Attestation Address:"</span>, attestation.publicKey.toBase58());
+console.log(<span class="code-string">"Is Verification Active?:"</span>, attestation.status === <span class="code-string">"ACTIVE"</span>);</code></pre>
+                </div>
+                <div class="tab-content" id="tab-solanapay">
+<pre><code class="language-javascript"><span class="code-keyword">import</span> { encodeURL } <span class="code-keyword">from</span> <span class="code-string">'@solana/pay'</span>;
 
-const paymentParameters = {
-    recipient: new PublicKey("7xK9mQ3f..."),
-    amount: new BigNumber(125.50),
-    label: "Superteam Nomad Store",
-    message: "Purchase validation with AML clearance attestation",
-    // Embed the verification standard required to clear transaction
-    memo: "solaudit:KYC_AML_COMBINED:v1.0.0"
+<span class="code-keyword">const</span> paymentParameters = {
+    recipient: <span class="code-keyword">new</span> <span class="code-func">PublicKey</span>(<span class="code-string">"7xK9mQ3fRpLzNsVWjCdBuAeYgTh2oP5rDwMiXlFvEqJy"</span>),
+    amount: <span class="code-keyword">new</span> <span class="code-func">BigNumber</span>(<span class="code-string">125.50</span>),
+    label: <span class="code-string">"Superteam Nomad Store"</span>,
+    message: <span class="code-string">"Purchase validation with compliance check"</span>,
+    memo: <span class="code-string">"solaudit:<span id="pay-code-predicate">KYC_AML_COMBINED</span>:v1.0.0"</span>
 };
 
-const solanaPayURL = encodeURL(paymentParameters);
-console.log("Compliant checkout QR code URI:", solanaPayURL);</code></pre>
+<span class="code-keyword">const</span> solanaPayURL = <span class="code-func">encodeURL</span>(paymentParameters);
+console.log(<span class="code-string">"Compliant checkout QR code URI:"</span>, solanaPayURL);</code></pre>
+                </div>
             </div>
         </section>
     </main>
+
+    <!-- Simulated Wallet Modal -->
+    <div class="modal-overlay" id="wallet-modal-overlay">
+        <div class="wallet-modal">
+            <h3 class="modal-title">Connect a Wallet</h3>
+            <p class="modal-desc">Connect your Solana wallet to interact with the SolAudit verification dashboard.</p>
+            <div class="wallet-options-list">
+                <div class="wallet-option" data-wallet="phantom">
+                    <span>Phantom</span>
+                    <div class="wallet-logo-placeholder wallet-logo-phantom">P</div>
+                </div>
+                <div class="wallet-option" data-wallet="solflare">
+                    <span>Solflare</span>
+                    <div class="wallet-logo-placeholder wallet-logo-solflare">S</div>
+                </div>
+                <div class="wallet-option" data-wallet="backpack">
+                    <span>Backpack</span>
+                    <div class="wallet-logo-placeholder wallet-logo-backpack">B</div>
+                </div>
+            </div>
+            <button class="modal-close-btn" id="btn-close-wallet-modal">Cancel</button>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer class="dashboard-footer">
