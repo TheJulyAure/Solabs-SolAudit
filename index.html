@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SolAudit — Decentralized On-Chain Compliance & Audit Layer for Solana</title>
+    <meta name="description" content="Trustless, Real-Time Compliance and Cryptographic Audit Infrastructure for the Solana Ecosystem. Powered by ZK-SNARKs and Merkle-Chained Audit Logs.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- Style Sheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Top Decorative Grid Overlay -->
+    <div class="grid-overlay"></div>
+
+    <!-- Main Navigation Bar -->
+    <header class="navbar">
+        <div class="logo-container">
+            <div class="logo-icon">
+                <div class="inner-shield"></div>
+                <div class="solana-bars">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            <div class="logo-text">
+                <span class="brand-main">SolAudit</span>
+                <span class="brand-sub">LABS</span>
+            </div>
+        </div>
+        <div class="nav-status">
+            <span class="indicator-dot blinking"></span>
+            <span class="status-label">SOLAUDIT-MAINNET-BETA</span>
+        </div>
+        <div class="nav-actions">
+            <a href="#simulator" class="nav-btn btn-secondary">Sandbox</a>
+            <a href="#explorer" class="nav-btn btn-secondary">Audit Explorer</a>
+            <a href="#oracle" class="nav-btn btn-secondary">Oracle Network</a>
+            <a href="#developer" class="nav-btn btn-primary">Developer Docs</a>
+        </div>
+    </header>
+
+    <main class="dashboard-container">
+        <!-- Hero Section & Pitch -->
+        <section class="hero-section">
+            <div class="hero-badge">SOLANA FOUNDATION GRANT PROPOSAL PROTOTYPE</div>
+            <h1 class="hero-title">Decentralized Compliance & <span class="cyan-gradient">Audit Layer</span></h1>
+            <p class="hero-subtitle">
+                A trustless, real-time compliance infrastructure purpose-built for Solana. Embeds zero-knowledge proof attestations directly into program-derived accounts (PDAs) with immutable Merkle-chained audit logs.
+            </p>
+            
+            <!-- Quick Stat Bar -->
+            <div class="quick-stats">
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-attestations">584,291</div>
+                    <div class="stat-label">Attestations Active</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-audited">12.8M</div>
+                    <div class="stat-label">Monthly Audits</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-latency">340ms</div>
+                    <div class="stat-label">Attestation Latency</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-unlocked">$512M</div>
+                    <div class="stat-label">Capital Unlocked</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dynamic Live Telemetry & Alerts -->
+        <section class="telemetry-section">
+            <div class="panel-header">
+                <h2>⚡ Live Attestation Telemetry</h2>
+                <div class="live-pulse">
+                    <span class="blinking-dot red"></span>
+                    <span>REAL-TIME DEVMAP STREAM</span>
+                </div>
+            </div>
+            <div class="telemetry-grid">
+                <div class="recent-events-card">
+                    <h3>Recent On-Chain Verifications</h3>
+                    <div class="event-feed-list" id="event-feed">
+                        <!-- Filled dynamically by JavaScript -->
+                    </div>
+                </div>
+                <div class="alerts-card">
+                    <h3>Active Rule Violations Gated</h3>
+                    <div class="violation-list" id="violation-feed">
+                        <!-- Filled dynamically by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Playground & ZK Attestation Simulator -->
+        <section id="simulator" class="interactive-simulator-section">
+            <div class="panel-header">
+                <h2>🧪 ZK-SNARK Attestation & CPI Sandbox</h2>
+                <span class="badge cyan">LAYER 1 & 4 PROTOTYPE</span>
+            </div>
+            <div class="simulator-layout">
+                <div class="simulator-controls card">
+                    <h3>1. Configure Wallet & Compliance Predicate</h3>
+                    <div class="form-group">
+                        <label for="sim-wallet">Solana Wallet Address (Target)</label>
+                        <div class="input-with-btn">
+                            <input type="text" id="sim-wallet" value="3tGhNkPqBmVrLwDsAeCjXfYuIoZpMnQvKsWlRdEaTbFc">
+                            <button id="btn-rand-wallet" class="small-btn">🎲 Gen</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="sim-predicate">Compliance Predicate</label>
+                        <select id="sim-predicate">
+                            <option value="KYC_AML_COMBINED">KYC/AML Combined Verification (Global)</option>
+                            <option value="OFAC_SDN_SCREEN">OFAC Sanctions & SDN Verification (U.S.)</option>
+                            <option value="PEP_SCREENING">Politically Exposed Person check (EU AMLD6)</option>
+                            <option value="TRAVEL_RULE_ID">FATF Recommendation 16 (Originator/Beneficiary)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="sim-issuer">Attestation Issuer (Accredited Node)</label>
+                        <select id="sim-issuer">
+                            <option value="node-meridian">Meridian Identity Verification Corp. (US-FINTRAC)</option>
+                            <option value="node-steppe">Steppe Cryptographic Attesters (KZ-AIFC)</option>
+                            <option value="node-zurich">Zurich Trust Labs (CH-FINMA)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="sim-zkp-active" checked>
+                            <span class="checkmark"></span>
+                            Generate Groth16 ZK-SNARK Proof (Preserves privacy / hides PII)
+                        </label>
+                    </div>
+                    <button id="btn-issue" class="btn-primary w-full glow">🚀 Issue On-Chain Attestation PDA</button>
+                </div>
+
+                <div class="simulator-logs card">
+                    <h3>2. Proving Engine & Solana Ledger Outputs</h3>
+                    <div class="terminal-container">
+                        <div class="terminal-header">
+                            <span class="terminal-dot red"></span>
+                            <span class="terminal-dot yellow"></span>
+                            <span class="terminal-dot green"></span>
+                            <span class="terminal-title">solaudit-proving-node-0.1.0</span>
+                        </div>
+                        <div class="terminal-body" id="simulator-terminal">
+                            <div class="term-line system">--- READY FOR PREDICATE SYNTHESIS ---</div>
+                            <div class="term-line">Enter configuration and press [Issue On-Chain Attestation PDA]</div>
+                        </div>
+                    </div>
+                    
+                    <!-- CPI Verification Module -->
+                    <div class="cpi-tester">
+                        <h4>Simulate Cross-Program Invocation (CPI) check</h4>
+                        <p class="small-desc">Simulates a lending protocol or DEX invoking the verify_attestation instruction atomically inside a transaction.</p>
+                        <div class="cpi-action-bar">
+                            <button id="btn-cpi-verify" class="btn-secondary w-full" disabled>🔒 Invoke verify_attestation CPI</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Immutable Audit Log Explorer -->
+        <section id="explorer" class="audit-explorer-section">
+            <div class="panel-header">
+                <h2>📇 Merkle-Chained Audit Log Explorer</h2>
+                <span class="badge purple">LAYER 2 PROTOTYPE</span>
+            </div>
+            <p class="section-desc">Every attestation issuance, revocation, and validation event produces an append-only log entry stored in a deterministically derived PDA chain. Each block mathematically seals the Merkle Root of the previous transactions, establishing a verifiable audit trail.</p>
+            
+            <div class="explorer-grid">
+                <div class="blocks-timeline card">
+                    <h3>Immutable PDA Append Chain</h3>
+                    <div class="chain-flow" id="chain-timeline">
+                        <!-- Filled dynamically by JavaScript -->
+                    </div>
+                </div>
+                <div class="block-details card">
+                    <h3>Cryptographic Proof Verification</h3>
+                    <div id="block-details-content" class="details-placeholder">
+                        <p>Click any log block in the append chain to generate its Merkle Proof and inspect its structured PDA schema.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Compliance Oracle Network Map & Rules Governance -->
+        <section id="oracle" class="oracle-governance-section">
+            <div class="panel-header">
+                <h2>🌐 Compliance Oracle Network & Rules Governance</h2>
+                <span class="badge gold">LAYER 3 PROTOTYPE</span>
+            </div>
+            <div class="oracle-layout">
+                <!-- Oracle Node List -->
+                <div class="oracle-nodes card">
+                    <h3>CON Nodes & Stake Consensus</h3>
+                    <p class="small-desc">Oracle validators run compliance engines and secure the network via stake-weighted voting on compliance registry updates.</p>
+                    <div class="node-list" id="oracle-node-list">
+                        <!-- Filled dynamically by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Governance Proposals Portal -->
+                <div class="governance-portal card">
+                    <h3>SPL Governance Registry Portal</h3>
+                    <p class="small-desc">Propose and vote on compliance rules registry (e.g. updating OFAC list coordinates or FATF transaction thresholds).</p>
+                    <div class="proposals-list" id="gov-proposals">
+                        <!-- Filled dynamically by JavaScript -->
+                    </div>
+                    
+                    <!-- Propose Rule Change form -->
+                    <div class="propose-form">
+                        <h4>Submit New Registry Proposal</h4>
+                        <div class="form-row">
+                            <input type="text" id="prop-title" placeholder="Proposal Title (e.g. Add OFAC List Update 2026-05)">
+                            <select id="prop-type">
+                                <option value="OFAC">OFAC Sanctions Update</option>
+                                <option value="THRESHOLD">Transaction Threshold Limit</option>
+                                <option value="JURISDICTION">High-Risk Jurisdiction Ban</option>
+                            </select>
+                        </div>
+                        <button id="btn-submit-proposal" class="small-btn btn-primary w-full">Submit Proposal to DAO Timelock</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Developer Integration Playground -->
+        <section id="developer" class="developer-playground-section">
+            <div class="panel-header">
+                <h2>🛠️ Developer Integration Playground</h2>
+                <span class="badge cyan">LAYER 4 PROTOTYPE</span>
+            </div>
+            <p class="section-desc">SolAudit provides a composable, zero-friction integration experience. Use Anchor macros to secure any smart contract instruction with a single decorator, or integrate via our TypeScript SDK in client apps.</p>
+            
+            <div class="dev-tabs">
+                <button class="tab-btn active" data-tab="anchor">Anchor Smart Contract (Rust)</button>
+                <button class="tab-btn" data-tab="typescript">TypeScript SDK</button>
+                <button class="tab-btn" data-tab="solanapay">Solana Pay Integration</button>
+            </div>
+            <div class="tab-content active" id="tab-anchor">
+                <pre><code class="language-rust">use anchor_lang::prelude::*;
+use solaudit_sdk::{compliance_gate, ComplianceGated, PredicateType};
+
+#[program]
+pub mod solana_defi_protocol {
+    use super::*;
+
+    // Automatically gates trade function with a KYC check
+    #[compliance_gate(predicate = PredicateType::KycAml, issuer_set = "solaudit_mainnet")]
+    pub fn execute_swap(ctx: Context&lt;ExecuteSwap&gt;, amount: u64) -&gt; Result&lt;()&gt; {
+        // Your trade, lending, or liquidity provisioning business logic
+        msg!("Compliance verification check passed atomically via PDA verify_attestation CPI call.");
+        Ok(())
+    }
+}</code></pre>
+            </div>
+            <div class="tab-content" id="tab-typescript">
+                <pre><code class="language-javascript">import { Connection, PublicKey } from '@solana/web3.js';
+import { SolAuditClient, PredicateType } from '@solaudit/sdk';
+
+const connection = new Connection("https://api.mainnet-beta.solana.com");
+const client = new SolAuditClient({ connection });
+
+// Query the user's active attestation credentials
+const walletAddress = new PublicKey("3tGhNkPqBmVrLwDsAeCjXfYuIoZpMnQvKsWlRdEaTbFc");
+const attestation = await client.getAttestation(walletAddress, PredicateType.KYC_AML_COMBINED);
+
+console.log("Attestation Address:", attestation.publicKey.toBase58());
+console.log("Issuer Details:", attestation.issuer.name);
+console.log("Is Verification Active?:", attestation.status === "ACTIVE" && attestation.expiresAt > Date.now());</code></pre>
+            </div>
+            <div class="tab-content" id="tab-solanapay">
+                <pre><code class="language-javascript">// Construct Solana Pay payment requests requiring KYC attestation prior to execution
+import { encodeURL } from '@solana/pay';
+
+const paymentParameters = {
+    recipient: new PublicKey("7xK9mQ3f..."),
+    amount: new BigNumber(125.50),
+    label: "Superteam Nomad Store",
+    message: "Purchase validation with AML clearance attestation",
+    // Embed the verification standard required to clear transaction
+    memo: "solaudit:KYC_AML_COMBINED:v1.0.0"
+};
+
+const solanaPayURL = encodeURL(paymentParameters);
+console.log("Compliant checkout QR code URI:", solanaPayURL);</code></pre>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="dashboard-footer">
+        <div class="footer-meta">
+            <p><strong>SolAudit Labs, Inc.</strong> — San Diego, CA | Contact: <code>[email protected]</code></p>
+            <p>MIT Licensed • Decentralized Compliance as an Ecosystem Public Good for Solana L1</p>
+        </div>
+        <div class="footer-links">
+            <a href="https://solauditlabs.io" target="_blank">Website</a>
+            <a href="https://github.com/solaudit-labs" target="_blank">GitHub</a>
+            <a href="https://solana.com" target="_blank">Solana Foundation</a>
+        </div>
+    </footer>
+
+    <!-- Audio Effects for micro-interactions -->
+    <audio id="audio-click" src="data:audio/wav;base64,UklGRjQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YRAAAAAAAP8A/wD/AP8A/wD/AP8A/wD/" preload="auto"></audio>
+    
+    <!-- Scripts -->
+    <script src="app.js"></script>
+</body>
+</html>
